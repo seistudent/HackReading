@@ -1,0 +1,24 @@
+import React, { Component } from 'react';
+
+class Header extends Component {
+    render() {
+        return (
+            <div>
+                <header class="masthead d-flex">
+                    <div class="container text-center my-auto">
+                        <h1 class="mb-1">HackReading</h1>
+                        <h3 class="mb-5">
+                            <em>A Productivity Tool to Support Reading Scalably</em>
+                        </h3>
+                        <a class="btn btn-primary btn-xl js-scroll-trigger" href="#about">Find Out More</a>
+                    </div>
+                    <div class="overlay"></div>
+                </header>
+            </div>
+        )
+    }
+}
+
+export default Header;
+
+
