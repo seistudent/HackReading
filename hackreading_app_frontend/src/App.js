@@ -45,7 +45,7 @@ class App extends Component {
     return (
       <Router>
         <div className="App">
-          <Navigation currentUser={this.state.currentUser} />
+          <Navigation currentUser={this.state.currentUser} toLogout={this.toLogout} />
 
           <Switch>
 

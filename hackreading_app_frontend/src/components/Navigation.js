@@ -28,6 +28,14 @@ class Navigation extends Component {
                         <a id="createaccount" className="menu-item" href="/sessions">Sign Up</a><br></br>
                         <a id="login" className="menu-item" href="/login">Login</a><br></br>
                         <a id="notes" className="menu-item" href="/notes">View Notes</a><br></br>
+                        {this.props.currentUser ? (
+                            <a
+                                id="logout" className="menu-item" href="/"
+                                onClick={this.props.toLogout}
+                            >
+                                Logout
+                  </a>
+                        ) : ("")}
                         <a onClick={this.showSettings} className="menu-item--small" href="/"></a><br></br>
                     </div>
                 </Menu>
