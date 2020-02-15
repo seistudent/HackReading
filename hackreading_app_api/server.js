@@ -6,6 +6,7 @@ const db = mongoose.connection;
 const session = require("express-session");
 const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
+const cors = require('cors')
 
 dotenv.config();
 
@@ -21,6 +22,20 @@ mongoose.connect(mongoURI, { useNewUrlParser: true },
 
 // Middleware
 app.use(express.json()); //use .json(), not .urlencoded()
+// app.use(cors());
+app.use(cors({
+    origin: function (origin, callback) {
+        // allow requests with no origin 
+        // (like mobile apps or curl requests)
+        if (!origin) return callback(null, true);
+        if (process.env.allowedOrigins.indexOf(origin) === -1) {
+            var msg = 'The CORS policy for this site does not ' +
+                'allow access from the specified Origin.';
+            return callback(new Error(msg), false);
+        }
+        return callback(null, true);
+    }
+}));
 
 // Error / Disconnection
 db.on('error', err => console.log(err.message + ' is Mongod not running?'))
@@ -33,3 +48,4 @@ app.listen(PORT, () => {
 // Routes
 const notesController = require('./controllers/notes.js');
 app.use('/notes', notesController);
+

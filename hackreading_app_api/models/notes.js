@@ -1,11 +1,10 @@
 const mongoose = require('mongoose');
 
 const notesSchema = new mongoose.Schema({
-    name: String,
+    noteName: String,
     bookTitle: String,
-    user: String,
-    description: String,
-    complete: Boolean
+    noteCreator: String,
+    noteContent: String,
 });
 
 const Notes = mongoose.model('Notes', notesSchema);
