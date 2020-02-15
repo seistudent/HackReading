@@ -7,8 +7,12 @@ class CallOut extends Component {
                 <section class="callout">
                     <div class="container text-center">
                         <h2 class="mx-auto mb-5">Start your Adventure!</h2>
-                        <a class="btn btn-primary btn-xl" href="https://startbootstrap.com/template-overviews/stylish-portfolio/">Sign me
-                        up!</a>
+                        <div>
+                            <a class="btn btn-primary btn-xl" href="/users">Sign me
+                            up!</a>
+                            <a class="btn btn-primary btn-xl" href="/notes">Type Away!</a>
+                        </div>
+
                     </div>
                 </section>
             </div>

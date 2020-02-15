@@ -12,7 +12,7 @@ class Portfolio extends Component {
                         </div>
                         <div class="row no-gutters">
                             <div class="col-lg-6">
-                                <a class="portfolio-item" href="#">
+                                <a class="portfolio-item" href="/">
                                     <span class="caption">
                                         <span class="caption-content">
                                             <h2>Zero to One</h2>
@@ -23,7 +23,7 @@ class Portfolio extends Component {
                                 </a>
                             </div>
                             <div class="col-lg-6">
-                                <a class="portfolio-item" href="#">
+                                <a class="portfolio-item" href="/">
                                     <span class="caption">
                                         <span class="caption-content">
                                             <h2>The Intelligent Investor</h2>
@@ -34,7 +34,7 @@ class Portfolio extends Component {
                                 </a>
                             </div>
                             <div class="col-lg-6">
-                                <a class="portfolio-item" href="#">
+                                <a class="portfolio-item" href="/">
                                     <span class="caption">
                                         <span class="caption-content">
                                             <h2>The Innovator's Dilemna</h2>
@@ -46,7 +46,7 @@ class Portfolio extends Component {
                                 </a>
                             </div>
                             <div class="col-lg-6">
-                                <a class="portfolio-item" href="#">
+                                <a class="portfolio-item" href="/">
                                     <span class="caption">
                                         <span class="caption-content">
                                             <h2>Man's Search for Meaning</h2>

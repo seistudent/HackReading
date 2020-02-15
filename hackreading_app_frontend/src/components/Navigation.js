@@ -4,7 +4,7 @@ class Navigation extends Component {
     render() {
         return (
             <div>
-                <a class="menu-toggle rounded" href="#">
+                <a class="menu-toggle rounded" href="/">
                     <i class="fas fa-bars"></i>
                 </a>
                 <nav id="sidebar-wrapper">

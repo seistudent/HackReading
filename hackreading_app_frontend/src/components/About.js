@@ -18,7 +18,7 @@ class About extends Component {
                                     translation), and adopts a
                                     crowd-sourced and community-curated approach (real-time collaborative editing).
                                 </p>
-                                <a class="btn btn-dark btn-xl js-scroll-trigger" href="#services">Learn How to Use HackReading</a>
+                                <a class="btn btn-dark btn-xl js-scroll-trigger" href="#services">Learn More About HackReading</a>
                             </div>
                         </div>
                     </div>
