@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import {
+    Redirect,
+    // Link
+} from "react-router-dom";
 
 class Login extends Component {
     constructor(props) {
@@ -8,7 +12,7 @@ class Login extends Component {
         this.state = {
             username: "",
             password: "",
-            currentUser: ""
+            redirect: false
         };
     }
     // HandleChange & handleSubmit
@@ -18,7 +22,8 @@ class Login extends Component {
 
     handleSubmit = event => {
         event.preventDefault();
-        fetch("http://localhost:3004/sessions", {
+        // console.log(this.state);
+        fetch("http://localhost:3004/users", {
             body: JSON.stringify(this.state),
             method: "POST",
             headers: {
@@ -26,27 +31,27 @@ class Login extends Component {
                 "Content-Type": "application/json"
             }
         })
-            .then(loggedInUser => {
-                return loggedInUser.json();
-            })
-            .then(jsonedUser => {
-                this.setState({
-                    currentUser: jsonedUser
-                });
-                console.log("Current User is:", this.state.currentUser);
+            .then(createdUser => {
+                return createdUser.json();
             })
             .then(() => {
-                this.props.userState(this.state.currentUser);
+                // to toggle to true to redirect
+                this.setState({
+                    redirect: true
+                });
             })
             .catch(error => console.log(error));
     };
 
     render() {
+        if (this.state.redirect === true) {
+            return <Redirect to="/login" />;
+        }
         return (
             <div>
                 <header class="masthead d-flex">
                     <div class="container text-center my-auto">
-                        <h3 class="mb-1">Login</h3><br></br>
+                        <h3 class="mb-1">Sign me up!</h3><br></br>
                         <Form onSubmit={this.handleSubmit}>
                             <Form.Group>
                                 <Form.Label>Username</Form.Label>
@@ -69,7 +74,7 @@ class Login extends Component {
                                     onChange={this.handleChange} placeholder="Password" />
                             </Form.Group>
                             <Button variant="primary" type="submit">
-                                Login
+                                Create new account
                             </Button>
                         </Form>
 

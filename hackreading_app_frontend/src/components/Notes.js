@@ -13,6 +13,23 @@ class Notes extends Component {
             notes: []
         }
     }
+    componentDidMount() {
+        // fetch("/users")
+        //   .then(response => response.json())
+        //   .then(users => {
+        //     this.setState({
+        //       users: users
+        //     });
+        //   });
+        fetch('http://localhost:3004/notes')
+            .then(response => response.json())
+            .then(notes => {
+                console.log(notes);
+                this.setState({
+                    notes: notes
+                });
+            });
+    }
     handleChange = (event) => {
         this.setState({ [event.target.id]: event.target.value })
     }
@@ -48,6 +65,40 @@ class Notes extends Component {
     render() {
         return (
             <div>
+
+                <header class="masthead d-flex">
+                    <div class="container text-center my-auto text-center  d-none d-lg-block">
+
+                        <br></br>
+                        <h3 class="mb-1">Dashboard</h3>
+                        <h3 class="mb-5">
+                            <em>Your Notes Repository!</em>
+                        </h3>
+                        <br></br>
+                        <table class="table table-dark table-hover table-striped text-white">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Name of Note</th>
+                                    <th scope="col">Book Title</th>
+                                    <th scope="col">User</th>
+                                    {/* <th scope="col">Contents of Note</th> */}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {this.state.notes.map(notes => {
+                                    return (
+                                        <tr>
+                                            <td> {notes.noteName} </td>
+                                            <td> {notes.bookTitle} </td>
+                                            <td> {notes.noteCreator} </td>
+                                            {/* <td> {notes.noteContent} </td> */}
+                                        </tr>)
+                                })}
+                            </tbody>
+                        </table>
+                    </div>
+                </header>
+
                 <header class="masthead d-flex">
                     <div class="container text-center my-auto">
                         <h3 class="mb-1">New Note</h3>
@@ -64,16 +115,17 @@ class Notes extends Component {
                                 <Form.Label>Book Title of Note</Form.Label>
                                 <Form.Control type="text" value={this.state.bookTitle} onChange={this.handleChange} id='bookTitle' placeholder="Name of Your Book" />
                             </Form.Group>
+
                             <Form.Group >
                                 <Form.Label>User</Form.Label>
                                 <Form.Control as="select" value={this.state.noteCreator} onChange={this.handleChange} id='noteCreator' >
-                                    <option>John</option>
-                                    <option>2</option>
+                                    <option>{this.props.currentUser.username}</option>
                                 </Form.Control>
                             </Form.Group>
+
                             <Form.Group>
                                 <Form.Label>Notes</Form.Label>
-                                <Form.Control as="textarea" value={this.state.noteContent} onChange={this.handleChange} id='noteContent' rows="8" placeholder="Type Away!" />
+                                <Form.Control as="textarea" value={this.state.noteContent} onChange={this.handleChange} id='noteContent' rows="6" placeholder="Type Away!" />
                             </Form.Group>
                             <Button variant="primary" type="submit">
                                 Submit
@@ -90,6 +142,8 @@ class Notes extends Component {
                     noteCreator = {this.state.noteCreator} <br></br>
                     noteContent = {this.state.noteContent}
                 </h3> */}
+
+
             </div>
         )
     }

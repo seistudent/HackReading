@@ -8,15 +8,39 @@ import CallOut from './components/CallOut.js'
 import Portfolio from './components/Portfolio.js'
 import Footer from './components/Footer.js'
 import Login from './components/Login.js'
+import SignUp from './components/SignUp.js'
 import {
   BrowserRouter as Router,
   Switch,
   Route,
+  Redirect,
   // Link
 } from "react-router-dom";
 
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentUser: "",
+      notes: []
+    };
+  }
+  userState = user => {
+    this.setState(
+      {
+        currentUser: user
+      },
+      () => {
+        console.log("user logged in");
+      }
+    );
+  };
+  toLogout = () => {
+    this.setState({
+      currentUser: ""
+    });
+  };
   render() {
     return (
       <Router>
@@ -33,12 +57,25 @@ class App extends Component {
               <Portfolio />
             </Route>
 
-            <Route exact path="/users">
-              <Login />
+            <Route exact path="/login">
+              {this.state.currentUser ? (
+                <Redirect to="/notes" />
+              ) : (
+                  <Login userState={this.userState} />
+                )}
             </Route>
 
             <Route exact path="/notes">
-              <Notes />
+              {this.state.currentUser ? (
+                <Notes currentUser={this.state.currentUser} />
+              ) : (
+                  <Redirect to="/login" userState={this.userState} />
+                )}
+            </Route>
+
+            <Route exact path="/sessions">
+              <SignUp />
+
             </Route>
           </Switch>
 

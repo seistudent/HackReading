@@ -8,7 +8,7 @@ class CallOut extends Component {
                     <div class="container text-center">
                         <h2 class="mx-auto mb-5">Start your Adventure!</h2>
                         <div>
-                            <a class="btn btn-primary btn-xl" href="/users">Sign me
+                            <a class="btn btn-primary btn-xl" href="/sessions">Sign me
                             up!</a>
                             <a class="btn btn-primary btn-xl" href="/notes">Type Away!</a>
                         </div>
