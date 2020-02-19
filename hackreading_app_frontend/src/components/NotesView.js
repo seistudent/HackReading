@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
+import { Link } from 'react-router-dom';
 
-class Notes extends Component {
+class NotesView extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -10,8 +9,37 @@ class Notes extends Component {
             bookTitle: '',
             noteCreator: '',
             noteContent: '',
-            notes: []
+            toDisplay: false,
+            notes: '',
+            selectedNote: "",
         }
+        // deleteNote = (id, index) => {
+        //     console.log(id, index)
+        // }
+    }
+    componentDidMount() {
+        fetch("/users")
+            .then(response => response.json())
+            .then(users => {
+                this.setState({
+                    users: users
+                });
+            });
+        fetch('http://localhost:3004/notes')
+            .then(response => {
+                return response.json()
+            })
+            .then(notes => {
+                this.setState({
+                    notes: notes
+                });
+                console.log(notes);
+            });
+        console.log("props", this.state.notes)
+        // this.setState({ notes: this.props.notes })
+    }
+    componentDidUpdate() {
+        console.log("props in did update", this.state.props);
     }
     handleChange = (event) => {
         this.setState({ [event.target.id]: event.target.value })
@@ -44,32 +72,88 @@ class Notes extends Component {
             })
             .catch(error => console.log(error))
     }
-
+    setNote = (notes) => {
+        console.log("notes", notes)
+        this.setState({
+            selectedNote: notes
+        })
+    }
+    // deleteNote = (id, index) => {
+    //     fetch('notes/' + id,
+    //       {
+    //         method: 'DELETE'
+    //       })
+    //       .then(data => {
+    //         this.setState({
+    //           notes: [
+    //             ...this.state.notes.slice(0, index),
+    //             ...this.state.notes.slice(index + 1)
+    //           ]
+    //         })
+    //       })
+    // }
     render() {
         return (
             <div>
-                <header class="masthead d-flex">
-                    <div class="container text-center my-auto">
-                        <h3 class="mb-1">New Note</h3>
+
+                <header class="masthead d-flex" id="NotesView" style={{ height: '100%' }}>
+                    <div class="container text-center my-auto text-center d-lg-block">
+                        <br></br>
+                        <h3 class="mb-1">Dashboard</h3>
                         <h3 class="mb-5">
-                            <em>Start Typing Away!</em>
+                            <em>Your Notes Repository!</em>
                         </h3>
-
-
+                        <br></br>
+                        {this.state.notes ? this.state.notes.map(notes => {
+                            return (
+                                <React.Fragment>
+                                    <table class="table table-dark table-hover table-striped text-white">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Name of Note</th>
+                                                <th scope="col">Book Title</th>
+                                                <th scope="col">User</th>
+                                                <th scope="col">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td> {notes.noteName} </td>
+                                                <td> {notes.bookTitle} </td>
+                                                <td> {notes.noteCreator} </td>
+                                                <td>
+                                                    <Link to={{
+                                                        pathname: "/notesEdit",
+                                                        state: {
+                                                            selectedNote: notes
+                                                        }
+                                                    }}>
+                                                        Edit Note
+                                                    </Link>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <table class="table table-dark table-hover table-striped text-white">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Details of Note</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td id={notes._id}> {notes.noteContent} </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </React.Fragment>
+                            )
+                        }) : ""}
                     </div>
-                    <div class="overlay"></div>
                 </header>
-
-                {/* View State */}
-                {/* <h3>
-                    noteName = {this.state.noteName} <br></br>
-                    bookTitle = {this.state.bookTitle} <br></br>
-                    noteCreator = {this.state.noteCreator} <br></br>
-                    noteContent = {this.state.noteContent}
-                </h3> */}
-            </div>
+            </div >
         )
     }
 }
 
-export default Notes;
+export default NotesView;

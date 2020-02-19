@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import NotesView from './NotesView.js';
 
 class Notes extends Component {
     constructor(props) {
@@ -14,17 +15,17 @@ class Notes extends Component {
         }
     }
     componentDidMount() {
-        // fetch("/users")
-        //   .then(response => response.json())
-        //   .then(users => {
-        //     this.setState({
-        //       users: users
-        //     });
-        //   });
+        fetch("/users")
+            .then(response => response.json())
+            .then(users => {
+                this.setState({
+                    users: users
+                });
+            });
         fetch('http://localhost:3004/notes')
             .then(response => response.json())
             .then(notes => {
-                console.log(notes);
+                console.log("Notes in note component", notes);
                 this.setState({
                     notes: notes
                 });
@@ -61,13 +62,16 @@ class Notes extends Component {
             })
             .catch(error => console.log(error))
     }
-
+    toggleDisplay() {
+        this.setState({ toDisplay: !this.state.toDisplay })
+        console.log(this.state.toDisplay)
+    }
     render() {
         return (
             <div>
 
                 <header class="masthead d-flex">
-                    <div class="container text-center my-auto text-center  d-none d-lg-block">
+                    <div class="container text-center my-auto text-center d-lg-block">
 
                         <br></br>
                         <h3 class="mb-1">Dashboard</h3>
@@ -81,23 +85,43 @@ class Notes extends Component {
                                     <th scope="col">Name of Note</th>
                                     <th scope="col">Book Title</th>
                                     <th scope="col">User</th>
+                                    <th scope="col">Action</th>
                                     {/* <th scope="col">Contents of Note</th> */}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {this.state.notes ?
+                                    this.state.notes.map(notes => {
+                                        return (
+                                            <tr>
+                                                <td> {notes.noteName} </td>
+                                                <td> {notes.bookTitle} </td>
+                                                <td> {notes.noteCreator} </td>
+                                                <td><a href="#NotesView">See Notes</a></td>
+                                            </tr>)
+                                    }) : ""}
+                            </tbody>
+                        </table>
+                        <br></br>
+                        {/* <table class="table table-dark table-hover table-striped text-white">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Details of Note</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {this.state.notes.map(notes => {
                                     return (
                                         <tr>
-                                            <td> {notes.noteName} </td>
-                                            <td> {notes.bookTitle} </td>
-                                            <td> {notes.noteCreator} </td>
-                                            {/* <td> {notes.noteContent} </td> */}
+                                            <td id={notes._id}> {notes.noteContent} </td>
                                         </tr>)
                                 })}
                             </tbody>
-                        </table>
+                        </table> */}
                     </div>
                 </header>
+
+
 
                 <header class="masthead d-flex">
                     <div class="container text-center my-auto">
@@ -135,14 +159,7 @@ class Notes extends Component {
                     <div class="overlay"></div>
                 </header>
 
-                {/* View State */}
-                {/* <h3>
-                    noteName = {this.state.noteName} <br></br>
-                    bookTitle = {this.state.bookTitle} <br></br>
-                    noteCreator = {this.state.noteCreator} <br></br>
-                    noteContent = {this.state.noteContent}
-                </h3> */}
-
+                {this.state.notes ? <NotesView notes={this.state.notes} /> : ""}
 
             </div>
         )

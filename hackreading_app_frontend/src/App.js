@@ -9,6 +9,8 @@ import Portfolio from './components/Portfolio.js'
 import Footer from './components/Footer.js'
 import Login from './components/Login.js'
 import SignUp from './components/SignUp.js'
+import NotesView from './components/NotesView.js'
+import NotesEdit from './components/NotesEdit.js'
 import {
   BrowserRouter as Router,
   Switch,
@@ -23,6 +25,7 @@ class App extends Component {
     super(props);
     this.state = {
       currentUser: "",
+      selectedNote: "",
       notes: []
     };
   }
@@ -67,7 +70,10 @@ class App extends Component {
 
             <Route exact path="/notes">
               {this.state.currentUser ? (
-                <Notes currentUser={this.state.currentUser} />
+                <React.Fragment currentUser={this.state.currentUser} >
+                  <Notes currentUser={this.state.currentUser} />
+                  {/* <NotesView currentUser={this.state.currentUser} /> */}
+                </React.Fragment>
               ) : (
                   <Redirect to="/login" userState={this.userState} />
                 )}
@@ -75,8 +81,11 @@ class App extends Component {
 
             <Route exact path="/sessions">
               <SignUp />
-
             </Route>
+
+            <Route exact path="/notesedit" render={(props) => <NotesEdit {...props} currentUser={this.state.currentUser} />} />
+
+
           </Switch>
 
           <Footer />
