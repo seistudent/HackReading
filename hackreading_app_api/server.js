@@ -7,6 +7,9 @@ const session = require("express-session");
 const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
 const cors = require('cors')
+const unirest = require('unirest')
+const cookieParser = require('cookie-parser')
+
 
 dotenv.config();
 
@@ -30,6 +33,9 @@ app.use(
         saveUninitialized: false
     })
 );
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(cookieParser());
 app.use(cors());
 // app.use(cors({
 //     origin: function (origin, callback) {

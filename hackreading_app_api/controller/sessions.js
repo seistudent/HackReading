@@ -9,7 +9,7 @@ sessions.post('/', (req, res) => {
         if (err) console.log(err.message);
         if (bcrypt.compareSync(req.body.password, foundUser.password)) {
             req.session.currentUser = foundUser;
-            res.json(foundUser);
+            res.json(foundUser)
         }
     });
 });

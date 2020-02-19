@@ -9,6 +9,13 @@ router.get('/', (req, res) => {
     });
 });
 
+router.get('/:id', (req, res) => {
+    console.log("get by id")
+    Notes.findById(req.params.id, (err, foundNote) => {
+        res.json(foundNote);
+    });
+});
+
 router.post('/', (req, res) => {
     console.log("req", req.body)
     Notes.create(req.body, (err, createdNotes) => {
@@ -23,8 +30,8 @@ router.delete('/:id', (req, res) => {
 });
 
 router.put('/:id', (req, res) => {
-    Notes.findByIdAndUpdate(req.params.id, req.body, { new: true }, (err, updatedTodo) => {
-        res.json(updatedNotes);
+    Notes.findByIdAndUpdate(req.params.id, req.body, { new: true }, (err, updatedNote) => {
+        res.json(updatedNote);
     });
 });
 
