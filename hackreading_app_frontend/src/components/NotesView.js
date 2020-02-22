@@ -9,7 +9,7 @@ class NotesView extends Component {
             bookTitle: '',
             noteCreator: '',
             noteContent: '',
-            toDisplay: false,
+            noteSummary: '',
             notes: '',
             selectedNote: "",
         }
@@ -39,7 +39,25 @@ class NotesView extends Component {
         // this.setState({ notes: this.props.notes })
     }
     componentDidUpdate() {
-        console.log("props in did update", this.state.props);
+        fetch("/users")
+            .then(response => response.json())
+            .then(users => {
+                this.setState({
+                    users: users
+                });
+            });
+        fetch('http://localhost:3004/notes')
+            .then(response => {
+                return response.json()
+            })
+            .then(notes => {
+                this.setState({
+                    notes: notes
+                });
+                console.log(notes);
+            });
+        console.log("props", this.state.notes)
+        // this.setState({ notes: this.props.notes })
     }
     handleChange = (event) => {
         this.setState({ [event.target.id]: event.target.value })
@@ -137,12 +155,12 @@ class NotesView extends Component {
                                     <table class="table table-dark table-hover table-striped text-white">
                                         <thead>
                                             <tr>
-                                                <th scope="col">Details of Note</th>
+                                                <th scope="col">Summary of Note</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td id={notes._id}> {notes.noteContent} </td>
+                                                <td id={notes._id}> {notes.noteSummary} </td>
                                             </tr>
                                         </tbody>
                                     </table>

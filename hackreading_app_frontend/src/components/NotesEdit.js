@@ -12,6 +12,7 @@ class NotesEdit extends Component {
             bookTitle: '',
             noteCreator: '',
             noteContent: '',
+            noteSummary: '',
             selectedNote: '',
             notes: [],
         }
@@ -23,6 +24,7 @@ class NotesEdit extends Component {
             bookTitle: this.props.location.state.selectedNote.bookTitle,
             noteCreator: this.props.location.state.selectedNote.noteCreator,
             noteContent: this.props.location.state.selectedNote.noteContent,
+            noteSummary: this.props.location.state.selectedNote.noteSummary,
         })
         console.log("this.prop", this.props.location.state.selectedNote)
         fetch('http://localhost:3004/notes')
@@ -36,6 +38,16 @@ class NotesEdit extends Component {
     }
     handleChange = (event) => {
         this.setState({ [event.target.id]: event.target.value })
+    }
+    summarizeAPI = () => {
+        fetch('http://localhost:3004/api/summarize/' + this.state.noteName + '/' + this.state.noteContent)
+            .then(response => response.json())
+            .then(noteSummary => {
+                console.log("results of summarize api", noteSummary);
+                this.setState({
+                    noteSummary: noteSummary.sentences,
+                })
+            });
     }
     handleSubmit = (event) => {
         event.preventDefault()
@@ -68,7 +80,7 @@ class NotesEdit extends Component {
     render() {
         return (
             <div>
-                <header class="masthead d-flex">
+                <header class="masthead d-flex" style={{ height: '100%' }}>
                     <div class="container text-center my-auto">
                         <h3 class="mb-1">Edit Note</h3>
                         <h3 class="mb-5">
@@ -88,7 +100,7 @@ class NotesEdit extends Component {
                                 <Form.Group >
                                     <Form.Label>User</Form.Label>
                                     <Form.Control as="select" defaultValue={this.state.selectedNote.noteCreator} onChange={this.handleChange} id='noteCreator' >
-                                        <option>{this.props.currentUser.username}</option>
+                                        <option>{this.state.currentUser}</option>
                                     </Form.Control>
                                 </Form.Group>
 
@@ -96,6 +108,15 @@ class NotesEdit extends Component {
                                     <Form.Label>Notes</Form.Label>
                                     <Form.Control as="textarea" defaultValue={this.state.selectedNote.noteContent} onChange={this.handleChange} id='noteContent' rows="6" />
                                 </Form.Group>
+
+                                <Button onClick={this.summarizeAPI}>Summarize</Button>
+
+                                <Form.Group>
+                                    <Form.Label>Summary</Form.Label>
+                                    <Form.Control as="textarea" value={this.state.noteSummary} onChange={this.handleChange} id='noteSummary' rows="6" placeholder="Obtain your summary here!" />
+                                </Form.Group>
+                                <br></br>
+
                                 <Button variant="primary" type="submit">
                                     Submit
                             </Button>

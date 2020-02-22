@@ -30,28 +30,20 @@ class App extends Component {
       notes: []
     };
   }
-  userState = user => {
-    this.setState(
-      {
-        currentUser: user
-      },
-      () => {
-        console.log("user logged in");
-      }
-    );
-  };
   toLogout = () => {
-    this.setState({
-      currentUser: ""
-    });
+    Cookies.remove('userId', { path: '' });
+    Cookies.remove('username', { path: '' });
+    Cookies.remove('isLoggedIn', { path: '' });
   };
   render() {
     let isLoggedIn = Cookies.get('isLoggedIn');
+    let username = Cookies.get('username');
+    let userId = Cookies.get('userId')
     return (
 
       < Router >
         <div className="App">
-          <Navigation currentUser={this.state.currentUser} toLogout={this.toLogout} />
+          <Navigation currentUser={username} toLogout={this.toLogout} />
 
           <Switch>
 
@@ -67,18 +59,17 @@ class App extends Component {
               {isLoggedIn ? (
                 <Redirect to="/notes" />
               ) : (
-                  <Login userState={this.userState} />
+                  <Login />
                 )}
             </Route>
 
             <Route exact path="/notes">
               {isLoggedIn ? (
-                <React.Fragment currentUser={this.state.currentUser} >
-                  <Notes currentUser={this.state.currentUser} />
-                  {/* <NotesView currentUser={this.state.currentUser} /> */}
+                <React.Fragment currentUser={username} >
+                  <Notes currentUser={username} />
                 </React.Fragment>
               ) : (
-                  <Redirect to="/login" userState={this.userState} />
+                  <Redirect to="/login" />
                 )}
             </Route>
 
@@ -86,7 +77,7 @@ class App extends Component {
               <SignUp />
             </Route>
 
-            <Route exact path="/notesedit" render={(props) => <NotesEdit {...props} currentUser={this.state.currentUser} />} />
+            <Route exact path="/notesedit" render={(props) => <NotesEdit {...props} currentUser={username} />} />
 
 
           </Switch>

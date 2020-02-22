@@ -11,6 +11,8 @@ class Notes extends Component {
             bookTitle: '',
             noteCreator: '',
             noteContent: '',
+            noteSummary: '',
+            currentUser: this.props.currentUser,
             notes: []
         }
     }
@@ -45,7 +47,8 @@ class Notes extends Component {
             }
         })
             .then(createdNotes => {
-                return createdNotes.json()
+                console.log('creatednote is', createdNotes)
+                return createdNotes.json();
             })
             .then(jsonedNotes => {
                 // reset the form
@@ -55,18 +58,26 @@ class Notes extends Component {
                     bookTitle: '',
                     noteCreator: '',
                     noteContent: '',
+                    noteSummary: '',
                     complete: Boolean,
                     notes: [jsonedNotes, ...this.state.notes]
                 })
-                console.log(jsonedNotes)
+                console.log(jsonedNotes);
             })
             .catch(error => console.log(error))
     }
-    toggleDisplay() {
-        this.setState({ toDisplay: !this.state.toDisplay })
-        console.log(this.state.toDisplay)
+    summarizeAPI = () => {
+        fetch('http://localhost:3004/api/summarize/' + this.state.noteName + '/' + this.state.noteContent)
+            .then(response => response.json())
+            .then(noteSummary => {
+                console.log("results of summarize api", noteSummary);
+                this.setState({
+                    noteSummary: noteSummary.sentences,
+                })
+            });
     }
     render() {
+        console.log("current user", this.state.currentUser)
         return (
             <div>
 
@@ -97,33 +108,18 @@ class Notes extends Component {
                                                 <td> {notes.noteName} </td>
                                                 <td> {notes.bookTitle} </td>
                                                 <td> {notes.noteCreator} </td>
-                                                <td><a href="#NotesView">See Notes</a></td>
+                                                <td><a href="#NotesView">See Summaries</a></td>
                                             </tr>)
                                     }) : ""}
                             </tbody>
                         </table>
                         <br></br>
-                        {/* <table class="table table-dark table-hover table-striped text-white">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Details of Note</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {this.state.notes.map(notes => {
-                                    return (
-                                        <tr>
-                                            <td id={notes._id}> {notes.noteContent} </td>
-                                        </tr>)
-                                })}
-                            </tbody>
-                        </table> */}
                     </div>
                 </header>
 
 
 
-                <header class="masthead d-flex">
+                <header class="masthead d-flex" style={{ height: '100%' }}>
                     <div class="container text-center my-auto">
                         <h3 class="mb-1">New Note</h3>
                         <h3 class="mb-5">
@@ -143,7 +139,7 @@ class Notes extends Component {
                             <Form.Group >
                                 <Form.Label>User</Form.Label>
                                 <Form.Control as="select" value={this.state.noteCreator} onChange={this.handleChange} id='noteCreator' >
-                                    <option>{this.props.currentUser.username}</option>
+                                    <option>{this.state.currentUser}</option>
                                 </Form.Control>
                             </Form.Group>
 
@@ -151,6 +147,14 @@ class Notes extends Component {
                                 <Form.Label>Notes</Form.Label>
                                 <Form.Control as="textarea" value={this.state.noteContent} onChange={this.handleChange} id='noteContent' rows="6" placeholder="Type Away!" />
                             </Form.Group>
+
+                            <Button onClick={this.summarizeAPI}>Summarize</Button>
+
+                            <Form.Group>
+                                <Form.Label>Summary</Form.Label>
+                                <Form.Control as="textarea" value={this.state.noteSummary} onChange={this.handleChange} id='noteSummary' rows="6" placeholder="Obtain your summary here!" />
+                            </Form.Group>
+                            <br></br>
                             <Button variant="primary" type="submit">
                                 Submit
                             </Button>

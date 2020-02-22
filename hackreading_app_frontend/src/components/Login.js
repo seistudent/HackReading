@@ -41,7 +41,7 @@ class Login extends Component {
                 console.log("Current User is:", this.state.currentUser);
             })
             .then(() => {
-                this.props.userState(this.state.currentUser);
+                window.location.href = "/notes";
             })
             .catch(error => console.log(error));
     };
