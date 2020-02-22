@@ -146,6 +146,7 @@ class NotesView extends Component {
                                             </tr>
                                         </tbody>
                                     </table>
+                                    <br></br>
                                 </React.Fragment>
                             )
                         }) : ""}

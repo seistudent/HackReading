@@ -62,6 +62,8 @@ const sessionsController = require("./controller/sessions.js");
 app.use("/sessions", sessionsController);
 const usersController = require("./controller/users.js");
 app.use("/users", usersController);
+const aylienapiController = require("./controller/aylienapi.js");
+app.use("/api", aylienapiController);
 
 // this will catch any route that doesn't exist
 app.get("*", (req, res) => {

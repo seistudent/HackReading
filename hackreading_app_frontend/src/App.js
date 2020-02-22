@@ -18,6 +18,7 @@ import {
   Redirect,
   // Link
 } from "react-router-dom";
+import Cookies from 'js-cookie';
 
 
 class App extends Component {
@@ -45,8 +46,10 @@ class App extends Component {
     });
   };
   render() {
+    let isLoggedIn = Cookies.get('isLoggedIn');
     return (
-      <Router>
+
+      < Router >
         <div className="App">
           <Navigation currentUser={this.state.currentUser} toLogout={this.toLogout} />
 
@@ -61,7 +64,7 @@ class App extends Component {
             </Route>
 
             <Route exact path="/login">
-              {this.state.currentUser ? (
+              {isLoggedIn ? (
                 <Redirect to="/notes" />
               ) : (
                   <Login userState={this.userState} />
@@ -69,7 +72,7 @@ class App extends Component {
             </Route>
 
             <Route exact path="/notes">
-              {this.state.currentUser ? (
+              {isLoggedIn ? (
                 <React.Fragment currentUser={this.state.currentUser} >
                   <Notes currentUser={this.state.currentUser} />
                   {/* <NotesView currentUser={this.state.currentUser} /> */}
@@ -90,7 +93,7 @@ class App extends Component {
 
           <Footer />
         </div>
-      </Router>
+      </Router >
     );
   }
 }

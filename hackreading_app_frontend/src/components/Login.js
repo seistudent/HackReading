@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import Cookies from 'js-cookie';
 
 class Login extends Component {
     constructor(props) {
@@ -30,6 +31,10 @@ class Login extends Component {
                 return loggedInUser.json();
             })
             .then(jsonedUser => {
+                console.log("supposed to be true:", jsonedUser)
+                Cookies.set('userId', jsonedUser._id)
+                Cookies.set('username', jsonedUser.username, { expires: 1 })
+                Cookies.set('isLoggedIn', true);
                 this.setState({
                     currentUser: jsonedUser
                 });

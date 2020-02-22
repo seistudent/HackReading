@@ -1,6 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const Notes = require('../models/notes.js');
+const AYLIENTextAPI = require('aylien_textapi');
+const textapi = new AYLIENTextAPI({
+    application_id: "eee59153",
+    application_key: "abe5c4e741d4ddcf02bef66c00141d73"
+});
 
 router.get('/', (req, res) => {
     console.log("entering get")
@@ -19,6 +24,7 @@ router.get('/:id', (req, res) => {
 router.post('/', (req, res) => {
     console.log("req", req.body)
     Notes.create(req.body, (err, createdNotes) => {
+        console.log('creatednote is', createdNotes)
         res.json(createdNotes); //.json() will send proper headers in response so client knows it's json coming back
     });
 });

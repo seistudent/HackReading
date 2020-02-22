@@ -12,26 +12,25 @@ class NotesEdit extends Component {
             bookTitle: '',
             noteCreator: '',
             noteContent: '',
-            toDisplay: false,
+            selectedNote: '',
             notes: [],
         }
     }
     componentDidMount() {
-        this.setState({ selectedNote: this.props.location.state.selectedNote })
+        this.setState({
+            selectedNote: this.props.location.state.selectedNote,
+            noteName: this.props.location.state.selectedNote.noteName,
+            bookTitle: this.props.location.state.selectedNote.bookTitle,
+            noteCreator: this.props.location.state.selectedNote.noteCreator,
+            noteContent: this.props.location.state.selectedNote.noteContent,
+        })
         console.log("this.prop", this.props.location.state.selectedNote)
-        fetch("/users")
-            .then(response => response.json())
-            .then(users => {
-                this.setState({
-                    users: users
-                });
-            });
         fetch('http://localhost:3004/notes')
             .then(response => response.json())
             .then(notes => {
                 console.log(notes);
                 this.setState({
-                    notes: notes
+                    notes: notes,
                 });
             });
     }
@@ -40,7 +39,7 @@ class NotesEdit extends Component {
     }
     handleSubmit = (event) => {
         event.preventDefault()
-        fetch('http://localhost:3004/notes', {
+        fetch('http://localhost:3004/notes/' + this.state.selectedNote._id, {
             body: JSON.stringify(this.state),
             method: 'PUT',
             headers: {
@@ -75,32 +74,34 @@ class NotesEdit extends Component {
                         <h3 class="mb-5">
                             <em>Start Typing Away!</em>
                         </h3>
+                        {this.state.selectedNote ?
+                            <Form onSubmit={this.handleSubmit}>
+                                <Form.Group >
+                                    <Form.Label>Name of Note</Form.Label>
+                                    <Form.Control type="text" defaultValue={this.state.selectedNote.noteName} onChange={this.handleChange} id='noteName' />
+                                </Form.Group>
+                                <Form.Group>
+                                    <Form.Label>Book Title of Note</Form.Label>
+                                    <Form.Control type="text" defaultValue={this.state.selectedNote.bookTitle} onChange={this.handleChange} id='bookTitle' />
+                                </Form.Group>
 
-                        <Form onSubmit={this.handleSubmit}>
-                            <Form.Group >
-                                <Form.Label>Name of Note</Form.Label>
-                                <Form.Control type="text" value={this.state.selectedNote.noteName} onChange={this.handleChange} id='noteName' />
-                            </Form.Group>
-                            <Form.Group>
-                                <Form.Label>Book Title of Note</Form.Label>
-                                <Form.Control type="text" value={this.state.selectedNote.bookTitle} onChange={this.handleChange} id='bookTitle' />
-                            </Form.Group>
+                                <Form.Group >
+                                    <Form.Label>User</Form.Label>
+                                    <Form.Control as="select" defaultValue={this.state.selectedNote.noteCreator} onChange={this.handleChange} id='noteCreator' >
+                                        <option>{this.props.currentUser.username}</option>
+                                    </Form.Control>
+                                </Form.Group>
 
-                            <Form.Group >
-                                <Form.Label>User</Form.Label>
-                                <Form.Control as="select" value={this.state.selectedNote.noteCreator} onChange={this.handleChange} id='noteCreator' >
-                                    <option>{this.props.currentUser.username}</option>
-                                </Form.Control>
-                            </Form.Group>
-
-                            <Form.Group>
-                                <Form.Label>Notes</Form.Label>
-                                <Form.Control as="textarea" value={this.state.selectedNote.noteContent} onChange={this.handleChange} id='noteContent' rows="6" />
-                            </Form.Group>
-                            <Button variant="primary" type="submit">
-                                Submit
+                                <Form.Group>
+                                    <Form.Label>Notes</Form.Label>
+                                    <Form.Control as="textarea" defaultValue={this.state.selectedNote.noteContent} onChange={this.handleChange} id='noteContent' rows="6" />
+                                </Form.Group>
+                                <Button variant="primary" type="submit">
+                                    Submit
                             </Button>
-                        </Form>
+                            </Form>
+                            : ""
+                        }
                     </div>
                     <div class="overlay"></div>
                 </header>
