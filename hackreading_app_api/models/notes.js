@@ -6,6 +6,7 @@ const notesSchema = new mongoose.Schema({
     noteCreator: String,
     noteContent: String,
     noteSummary: Array,
+    noteEntities: Object,
 });
 
 const Notes = mongoose.model('Notes', notesSchema);

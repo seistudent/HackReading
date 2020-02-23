@@ -21,4 +21,16 @@ aylienapi.get('/summarize/:title/:text', (req, res) => {
     });
 });
 
+aylienapi.get('/entities/:text', (req, res) => {
+    console.log("entity extraction api")
+    textapi.entities({
+        'text': req.params.text,
+    }, function (error, response) {
+        if (error === null) {
+            console.log("api response", response);
+        }
+        res.json(response)
+    });
+});
+
 module.exports = aylienapi;
