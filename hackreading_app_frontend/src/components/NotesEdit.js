@@ -13,6 +13,7 @@ class NotesEdit extends Component {
             noteCreator: '',
             noteContent: '',
             noteSummary: '',
+            noteEntities: '',
             selectedNote: '',
             notes: [],
         }
@@ -49,6 +50,16 @@ class NotesEdit extends Component {
                 })
             });
     }
+    entitiesAPI = () => {
+        fetch('http://localhost:3004/api/entities/' + this.state.noteContent)
+            .then(response => response.json())
+            .then(noteEntities => {
+                console.log("results of entities api", noteEntities);
+                this.setState({
+                    noteEntities: noteEntities,
+                })
+            });
+    }
     handleSubmit = (event) => {
         event.preventDefault()
         fetch('http://localhost:3004/notes/' + this.state.selectedNote._id, {
@@ -74,6 +85,9 @@ class NotesEdit extends Component {
                     notes: [jsonedNotes, ...this.state.notes]
                 })
                 console.log(jsonedNotes)
+            })
+            .then(() => {
+                window.location.href = "/notes";
             })
             .catch(error => console.log(error))
     }
@@ -109,8 +123,35 @@ class NotesEdit extends Component {
                                     <Form.Control as="textarea" defaultValue={this.state.selectedNote.noteContent} onChange={this.handleChange} id='noteContent' rows="6" />
                                 </Form.Group>
 
-                                <Button onClick={this.summarizeAPI}>Summarize</Button>
 
+
+                                <Button onClick={this.summarizeAPI}>Summarize</Button>
+                                <Button onClick={this.entitiesAPI}>Entity Extraction</Button>
+
+                                <br></br><br></br>
+                                {this.state.noteEntities ?
+
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th scope="row">Type</th>
+                                                <th>Entity</th>
+                                            </tr>
+                                        </thead>
+                                        <tr class="label-1">
+                                            <th scope="row"> Keyword </th>
+                                            <td class="align-left"> {this.state.noteEntities.entities.keyword.map(entity => <span class="label">  {entity}  </span>)} </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row"> Organisation </th>
+                                            <td class="align-left"> {this.state.noteEntities.entities.organization.map(entity => <span class="label">  {entity}  </span>)} </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row"> Person </th>
+                                            <td class="align-left"> {this.state.noteEntities.entities.person.map(entity => <span class="label">  {entity}  </span>)} </td>
+                                        </tr>
+                                    </table> : ""}
+                                <br></br>
                                 <Form.Group>
                                     <Form.Label>Summary</Form.Label>
                                     <Form.Control as="textarea" value={this.state.noteSummary} onChange={this.handleChange} id='noteSummary' rows="6" placeholder="Obtain your summary here!" />
