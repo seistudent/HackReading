@@ -75,13 +75,15 @@ app.get("*", (req, res) => {
 
 io.on('connection', function (socket) {
     const { id } = socket.client;
+    const userCount = io.engine.clientsCount
     console.log(`user connected: ${id}`);
+    console.log(`number of users connected: ${io.engine.clientsCount}`);
+    io.emit("at first connect", userCount)
     socket.on('disconnect', function () {
         console.log('user disconnected');
     });
     socket.on("chat message", (msg) => {
         console.log(`${id}: ${msg}`);
-
         io.emit("chat message", { id, msg });
     });
 });
