@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import io from 'socket.io-client';
 
+const socket = io('http://localhost:3004');
 
 class NotesEdit extends Component {
     constructor(props) {
@@ -15,6 +17,8 @@ class NotesEdit extends Component {
             noteSummary: '',
             noteEntities: '',
             selectedNote: '',
+            chatMessage: '',
+            chatDisplay: [],
             notes: [],
         }
     }
@@ -26,6 +30,8 @@ class NotesEdit extends Component {
             noteCreator: this.props.location.state.selectedNote.noteCreator,
             noteContent: this.props.location.state.selectedNote.noteContent,
             noteSummary: this.props.location.state.selectedNote.noteSummary,
+            // chatMessage: this.props.location.state.selectedNote.chatMessage,
+            // chatDisplay: this.props.location.state.selectedNote.chatDisplay
         })
         console.log("this.prop", this.props.location.state.selectedNote)
         fetch('http://localhost:3004/notes')
@@ -36,7 +42,23 @@ class NotesEdit extends Component {
                     notes: notes,
                 });
             });
+        socket.on("chat message", ({ id, msg }) => {
+            // Add new messages to existing messages in "chat"
+            console.log("emitted message received", { id, msg })
+            this.setState({
+                chatDisplay: [...this.state.chatDisplay, { id, msg }]
+            });
+        });
     }
+    // componentDidUpdate() {
+    //     socket.on("chat message", ({ id, msg }) => {
+    //         // Add new messages to existing messages in "chat"
+    //         console.log("emitted message received", { id, msg })
+    //         this.setState({
+    //             chatDisplay: [...this.state.chatDisplay, { id, msg }]
+    //         });
+    //     });
+    // }
     handleChange = (event) => {
         this.setState({ [event.target.id]: event.target.value })
     }
@@ -90,6 +112,14 @@ class NotesEdit extends Component {
                 window.location.href = "/notes";
             })
             .catch(error => console.log(error))
+    }
+    chatSubmit = (event) => {
+        event.preventDefault()
+        socket.emit('chat message', this.state.chatMessage)
+        // this.setState({
+        //     chatMessage: '',
+        // })
+        this.chatMessage = ''
     }
     render() {
         return (
@@ -167,6 +197,28 @@ class NotesEdit extends Component {
                     </div>
                     <div class="overlay"></div>
                 </header>
+
+                <body>
+                    <div>
+                        <br></br>
+                        <h4>Collaborative Zone!</h4>
+                        {this.state.chatDisplay.map((chatDisplay) => {
+                            return (
+                                <div>
+                                    {chatDisplay.id} : {chatDisplay.msg}
+                                </div>
+                            )
+                        })}
+                    </div>
+                    <ul id="messages"></ul>
+                    <form action="">
+                        <input autocomplete="off" onChange={this.handleChange} id='chatMessage' /><button onClick={this.chatSubmit}>Send</button>
+                    </form>
+                    <script src="/socket.io/socket.io.js"></script>
+                    <script>
+                        const socket = io();
+                    </script>
+                </body>
             </div>
         )
     }

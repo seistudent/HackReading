@@ -1,68 +1,36 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# HackReading
 
-## Available Scripts
+Welcome to HackReading! This is a productivity application, that helps you organise your notes and better leverage the power of reading to build knowledge. 
 
-In the project directory, you can run:
+This app utilises Natural Language Processing Tools (summarization, translation), and adopts a crowd-sourced and community-curated approach (real-time collaborative editing). 
 
-### `yarn start`
+How it works!
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+1. Create a user account
+2. Write a new note based on a book which you are reading
+3. When you submit your completed note, we summarize your app and include this high level summary for ease of reference subsequently 
+4. View other people's summaries, select a translated version if necessary
+5. Add to other summaries in real-time if you are reading the same book
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+Technologies used
 
-### `yarn test`
+1. MERN Stack - MongoDB, Express, React, Node.js; React Hooks, Creat React App, React Router, React-Bootstrap
+2. Socket.io for real time editing
+3. Systran.io for translation (API)
+4. Aylien API for entity extraction and text summarization (API)
+5. Google Cloud Text-to-Speech (API)
+6. Bootstrap for front-end formatting
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+To Do
 
-### `yarn build`
+1. Build landing page and about page
+2. Build user sign up
+3. Build note creation and translation feature
+4. Build note viewing 
+5. Build note editing, and translation, speech to text
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Models required
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+1. User model: name, password, email, user_id
+2. Note model: title, book, text, summary, creator, note_id
+3. Join Table: user_id, note_id
