@@ -9,7 +9,8 @@ const dotenv = require("dotenv");
 const cors = require('cors')
 const unirest = require('unirest')
 const cookieParser = require('cookie-parser')
-
+const http = require('http').createServer(app);
+const io = require('socket.io')(http)
 
 dotenv.config();
 
@@ -65,13 +66,48 @@ app.use("/users", usersController);
 const aylienapiController = require("./controller/aylienapi.js");
 app.use("/api", aylienapiController);
 
+
+
 // this will catch any route that doesn't exist
 app.get("*", (req, res) => {
     res.status(404).json("Sorry, page not found");
 });
 
-app.listen(PORT, () => {
+io.on('connection', function (socket) {
+    const { id } = socket.client;
+    console.log(`user connected: ${id}`);
+    socket.on('disconnect', function () {
+        console.log('user disconnected');
+    });
+    socket.on("chat message", (msg) => {
+        console.log(`${id}: ${msg}`);
+
+        io.emit("chat message", { id, msg });
+    });
+});
+
+// io.on('connection', function (client) {
+//     console.log('a user connected');
+//     client.on('register', handleRegister)
+//     client.on('join', handleJoin)
+//     client.on('leave', handleLeave)
+//     client.on('message', handleMessage)
+//     client.on('chatrooms', handleGetChatrooms)
+//     client.on('availableUsers', handleGetAvailableUsers)
+//     client.on('disconnect', function () {
+//         console.log('client disconnect...', client.id)
+//         handleDisconnect()
+//     })
+//     client.on('error', function (err) {
+//         console.log('received error from client:', client.id)
+//         console.log(err)
+//     })
+// })
+
+
+http.listen(PORT, () => {
     console.log('Let\'s get things done on port', PORT)
 })
+
 
 
