@@ -18,7 +18,8 @@ class NotesEdit extends Component {
             noteEntities: '',
             selectedNote: '',
             chatMessage: '',
-            chatDisplay: [],
+            chatUserCount: 0,
+            chatDisplay: [{ id: "", msg: { currentUser: "", chatMessage: "" } }],
             notes: [],
         }
     }
@@ -42,6 +43,13 @@ class NotesEdit extends Component {
                     notes: notes,
                 });
             });
+        socket.on("at first connect", (userCount) => {
+            // Add new messages to existing messages in "chat"
+            console.log("usercount is", userCount)
+            this.setState({
+                chatUserCount: userCount
+            });
+        });
         socket.on("chat message", ({ id, msg }) => {
             // Add new messages to existing messages in "chat"
             console.log("emitted message received", { id, msg })
@@ -49,6 +57,7 @@ class NotesEdit extends Component {
                 chatDisplay: [...this.state.chatDisplay, { id, msg }]
             });
         });
+
     }
     // componentDidUpdate() {
     //     socket.on("chat message", ({ id, msg }) => {
@@ -115,11 +124,12 @@ class NotesEdit extends Component {
     }
     chatSubmit = (event) => {
         event.preventDefault()
-        socket.emit('chat message', this.state.chatMessage)
+        const { currentUser, chatMessage } = this.state
+        socket.emit('chat message', { currentUser, chatMessage })
         // this.setState({
         //     chatMessage: '',
         // })
-        this.chatMessage = ''
+        // this.chatMessage = ''
     }
     render() {
         return (
@@ -198,14 +208,16 @@ class NotesEdit extends Component {
                     <div class="overlay"></div>
                 </header>
 
-                <body>
-                    <div>
+                <body class="chatRoom">
+                    <div >
                         <br></br>
                         <h4>Collaborative Zone!</h4>
+
+                        Welcome {this.state.currentUser}! There are currently {this.state.chatUserCount} users in this chat room :) <br></br>
                         {this.state.chatDisplay.map((chatDisplay) => {
                             return (
                                 <div>
-                                    {chatDisplay.id} : {chatDisplay.msg}
+                                    {chatDisplay.msg.currentUser} : {chatDisplay.msg.chatMessage}
                                 </div>
                             )
                         })}

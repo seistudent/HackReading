@@ -80,3 +80,14 @@
 .table {
   border-spacing: 0 .7em;
 }
+
+ /* Styling of Chat Room */
+ .chatRoom {
+  background: #f0f0f0;
+  color: rgb(64, 75, 224);
+  margin: .3em;
+  width: 100%;
+  /* border-radius: 30px; */
+  padding: .5em 1em;
+  display: inline-block;
+}

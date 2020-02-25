@@ -38,6 +38,7 @@ class App extends Component {
   render() {
     let isLoggedIn = Cookies.get('isLoggedIn');
     let username = Cookies.get('username');
+    console.log("username is", username)
     let userId = Cookies.get('userId')
     return (
 
