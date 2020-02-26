@@ -1,3 +1,4 @@
+
 // Dependencies
 const express = require("express");
 const mongoose = require("mongoose");
@@ -7,7 +8,7 @@ const session = require("express-session");
 const bodyParser = require("body-parser");
 
 // Environment Variables
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3003;
 
 const mongoURI =
   process.env.MONGODB_URI ||

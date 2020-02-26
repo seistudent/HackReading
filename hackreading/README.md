@@ -14,10 +14,10 @@ How it works!
 
 Technologies used
 
-1. MERN Stack - MongoDB, Express, React, Node.js; React Hooks
+1. MERN Stack - MongoDB, Express, React, Node.js; React Hooks, Creat React App, React Router, React-Bootstrap
 2. Socket.io for real time editing
 3. Systran.io for translation (API)
-4. Textsummarization.net for summarization (API)
+4. Aylien API for entity extraction and text summarization (API)
 5. Google Cloud Text-to-Speech (API)
 6. Bootstrap for front-end formatting
 
