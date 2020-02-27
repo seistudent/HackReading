@@ -3,7 +3,8 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import io from 'socket.io-client';
 
-const socket = io('http://localhost:3004');
+// const socket = io('http://localhost:3004');
+const socket = io('http://hackreadingapi.herokuapp.com');
 
 class NotesEdit extends Component {
     constructor(props) {
@@ -35,7 +36,8 @@ class NotesEdit extends Component {
             // chatDisplay: this.props.location.state.selectedNote.chatDisplay
         })
         console.log("this.prop", this.props.location.state.selectedNote)
-        fetch('http://localhost:3004/notes')
+        // fetch('http://localhost:3004/notes')
+        fetch('http://hackreadingapi.herokuapp.com/notes')
             .then(response => response.json())
             .then(notes => {
                 console.log(notes);
@@ -72,7 +74,8 @@ class NotesEdit extends Component {
         this.setState({ [event.target.id]: event.target.value })
     }
     summarizeAPI = () => {
-        fetch('http://localhost:3004/api/summarize/' + this.state.noteName + '/' + this.state.noteContent)
+        // fetch('http://localhost:3004/api/summarize/' + this.state.noteName + '/' + this.state.noteContent)
+        fetch('http://hackreadingapi.herokuapp.com/api/summarize/' + this.state.noteName + '/' + this.state.noteContent)
             .then(response => response.json())
             .then(noteSummary => {
                 console.log("results of summarize api", noteSummary);
@@ -82,7 +85,8 @@ class NotesEdit extends Component {
             });
     }
     entitiesAPI = () => {
-        fetch('http://localhost:3004/api/entities/' + this.state.noteContent)
+        // fetch('http://localhost:3004/api/entities/' + this.state.noteContent)
+        fetch('http://hackreadingapi.herokuapp.com/api/entities/' + this.state.noteContent)
             .then(response => response.json())
             .then(noteEntities => {
                 console.log("results of entities api", noteEntities);
@@ -93,7 +97,8 @@ class NotesEdit extends Component {
     }
     handleSubmit = (event) => {
         event.preventDefault()
-        fetch('http://localhost:3004/notes/' + this.state.selectedNote._id, {
+        // fetch('http://localhost:3004/notes/' + this.state.selectedNote._id, {
+        fetch('http://hackreadingapi.herokuapp.com/notes/' + this.state.selectedNote._id, {
             body: JSON.stringify(this.state),
             method: 'PUT',
             headers: {

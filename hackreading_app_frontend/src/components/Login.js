@@ -19,7 +19,8 @@ class Login extends Component {
 
     handleSubmit = event => {
         event.preventDefault();
-        fetch("http://localhost:3004/sessions", {
+        // fetch("http://localhost:3004/sessions", {
+        fetch("http://hackreadingapi.herokuapp.com/sessions", {
             body: JSON.stringify(this.state),
             method: "POST",
             headers: {

@@ -24,7 +24,8 @@ class Notes extends Component {
                     users: users
                 });
             });
-        fetch('http://localhost:3004/notes')
+        // fetch('http://localhost:3004/notes')
+        fetch('http://hackreadingapi.herokuapp.com/notes')
             .then(response => response.json())
             .then(notes => {
                 console.log("Notes in note component", notes);
@@ -38,7 +39,8 @@ class Notes extends Component {
     }
     handleSubmit = (event) => {
         event.preventDefault()
-        fetch('http://localhost:3004/notes', {
+        // fetch('http://localhost:3004/notes', {
+        fetch('http://hackreadingapi.herokuapp.com/notes', {
             body: JSON.stringify(this.state),
             method: 'POST',
             headers: {
@@ -67,7 +69,8 @@ class Notes extends Component {
             .catch(error => console.log(error))
     }
     summarizeAPI = () => {
-        fetch('http://localhost:3004/api/summarize/' + this.state.noteName + '/' + this.state.noteContent)
+        // fetch('http://localhost:3004/api/summarize/' + this.state.noteName + '/' + this.state.noteContent)
+        fetch('http://hackreadingapi.herokuapp.com/api/summarize/' + this.state.noteName + '/' + this.state.noteContent)
             .then(response => response.json())
             .then(noteSummary => {
                 console.log("results of summarize api", noteSummary);
