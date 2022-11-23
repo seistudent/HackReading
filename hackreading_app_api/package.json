@@ -21,7 +21,7 @@
     "js-sha256": "^0.9.0",
     "mongoose": "^5.8.11",
     "sessions": "0.0.2-7",
-    "socket.io": "^2.3.0",
+    "socket.io": "^2.5.0",
     "unirest": "^0.6.0"
   }
 }
